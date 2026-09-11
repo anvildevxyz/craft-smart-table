@@ -1,0 +1,124 @@
+.smarttable-scroll {
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gray-400, #ccc) transparent;
+}
+
+.smarttable-scroll::-webkit-scrollbar {
+  height: 8px;
+}
+
+.smarttable-scroll::-webkit-scrollbar-thumb {
+  background: var(--gray-400, #ccc);
+  border-radius: 4px;
+}
+
+.smarttable-settings .input {
+  scrollbar-width: thin;
+  scrollbar-color: var(--gray-400, #ccc) transparent;
+}
+
+.smarttable-settings .input::-webkit-scrollbar {
+  height: 8px;
+}
+
+.smarttable-settings .input::-webkit-scrollbar-thumb {
+  background: var(--gray-400, #ccc);
+  border-radius: 4px;
+}
+
+.smarttable-settings {
+  position: relative;
+}
+
+.smarttable-settings.smarttable-has-overflow::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 32px;
+  background: linear-gradient(to right, transparent, rgba(0, 0, 0, 0.22));
+  pointer-events: none;
+}
+
+.richtext-cell {
+  min-width: 200px;
+  vertical-align: top;
+}
+
+.richtext-cell .editable-table-preview {
+  cursor: text;
+  min-height: 1.5em;
+  padding: 4px;
+}
+
+.richtext-cell.smarttable-active {
+  background: var(--gray-050);
+}
+
+.richtext-cell .ck-editor__editable {
+  min-height: 4em;
+  padding: 4px;
+}
+
+.html-cell {
+  min-width: 220px;
+  vertical-align: top;
+  padding: 4px;
+}
+
+.html-cell .elementselect {
+  min-height: 1.5em;
+}
+
+.smarttable-settings .html-cell {
+  min-width: 160px;
+}
+
+.smarttable-source-checklist {
+  max-height: 130px;
+  overflow-y: auto;
+}
+
+.smarttable-source-checklist .checkbox-select-item {
+  padding: 2px 0;
+}
+
+tr.smarttable-header-row {
+  font-weight: bold;
+  background: var(--gray-050);
+}
+
+.smarttable-export-import-controls {
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.smarttable-export-links {
+  display: flex;
+  gap: 12px;
+}
+
+.smarttable-export-link,
+.smarttable-import-link {
+  font-size: 12px;
+  color: var(--link-color);
+  cursor: pointer;
+}
+
+.smarttable-import-error {
+  font-size: 12px;
+  color: var(--error-color);
+}
+
+tbody .smarttable-conditional-cell > * {
+  visibility: hidden;
+}
+
+tbody .smarttable-conditional-cell.smarttable-conditional-cell--visible > * {
+  visibility: visible;
+}

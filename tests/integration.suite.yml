@@ -1,0 +1,8 @@
+actor: IntegrationTester
+modules:
+  enabled:
+    - Asserts
+    # Schema comes from the plugin install configured in codeception.yml — no
+    # per-suite migration deltas needed.
+    - \craft\test\Craft
+    - \Helper\Integration

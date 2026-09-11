@@ -1,0 +1,101 @@
+// Default styling for the <table> markup rendered by
+// smart-table/_macros.twig's table() macro. Not loaded or referenced by
+// the plugin's own PHP anywhere — this is a source file for a consuming
+// project's own Sass build to `@use`, not a runtime asset the plugin
+// registers itself. A project that never imports this still gets the
+// macro's plain, unstyled (but fully accessible) table; nothing here is
+// required.
+//
+// Two ways to customize:
+//
+//   1. Sass — override any $smart-table-* variable at @use time, before
+//      this partial compiles:
+//
+//        @use "smart-table" with (
+//          $smart-table-border-color: #ccc,
+//          $smart-table-radius: 0,
+//        );
+//
+//   2. Plain CSS, no Sass build — every variable is also emitted as a
+//      custom property on .smarttable-table, so a project that doesn't
+//      use Sass at all can override them directly instead:
+//
+//        .smarttable-table { --smarttable-border-color: #ccc; }
+//
+// Class names match what the macro actually renders (see _macros.twig):
+// .smarttable-table, __caption, __heading (column headings), __row,
+// __row--header (a row marked Header row), __cell, __cell--header.
+
+$smart-table-border-color: #e2e2e2 !default;
+$smart-table-heading-bg: #f7f7f8 !default;
+$smart-table-header-row-bg: #fafafa !default;
+$smart-table-text-color: #1a1a2e !default;
+$smart-table-link-color: #2563eb !default;
+$smart-table-radius: 8px !default;
+$smart-table-cell-padding: 0.65em 0.85em !default;
+$smart-table-font-size: 0.95em !default;
+
+.smarttable-table {
+  --smarttable-border-color: #{$smart-table-border-color};
+  --smarttable-heading-bg: #{$smart-table-heading-bg};
+  --smarttable-header-row-bg: #{$smart-table-header-row-bg};
+  --smarttable-text-color: #{$smart-table-text-color};
+  --smarttable-link-color: #{$smart-table-link-color};
+  --smarttable-radius: #{$smart-table-radius};
+  --smarttable-cell-padding: #{$smart-table-cell-padding};
+  --smarttable-font-size: #{$smart-table-font-size};
+
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--smarttable-font-size);
+  color: var(--smarttable-text-color);
+  border: 1px solid var(--smarttable-border-color);
+  border-radius: var(--smarttable-radius);
+  // Clips the header background / border-radius corners cleanly, since
+  // border-radius alone doesn't crop a table's cell backgrounds.
+  overflow: hidden;
+
+  &__caption {
+    caption-side: top;
+    text-align: left;
+    padding: var(--smarttable-cell-padding);
+    font-weight: 600;
+    border-bottom: 1px solid var(--smarttable-border-color);
+  }
+
+  &__heading {
+    background: var(--smarttable-heading-bg);
+    text-align: left;
+    font-weight: 600;
+    padding: var(--smarttable-cell-padding);
+    border-bottom: 1px solid var(--smarttable-border-color);
+  }
+
+  &__cell {
+    padding: var(--smarttable-cell-padding);
+    border-bottom: 1px solid var(--smarttable-border-color);
+    vertical-align: top;
+
+    &--header {
+      font-weight: 600;
+      text-align: left;
+    }
+  }
+
+  &__row {
+    // &__cell is a sibling BEM element, not a child of &__row, so it needs
+    // its full class name here — & at this nesting level is already
+    // .smarttable-table__row, not .smarttable-table.
+    &:last-child .smarttable-table__cell {
+      border-bottom: none;
+    }
+
+    &--header {
+      background: var(--smarttable-header-row-bg);
+    }
+  }
+
+  a {
+    color: var(--smarttable-link-color);
+  }
+}

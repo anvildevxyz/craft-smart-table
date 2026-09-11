@@ -1,0 +1,16 @@
+/vendor
+/composer.lock
+/.claude/
+/.phpstan/
+/.phpunit.result.cache
+/storage/logs/
+/storage/runtime/
+.DS_Store
+
+# Codeception integration-suite runtime artifacts (config files ARE committed)
+/tests/_output/
+/tests/_craft/storage/
+/tests/_support/_generated/
+
+# Published asset-bundle copies (regenerated from src/web at runtime)
+/cpresources/

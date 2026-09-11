@@ -1,0 +1,29 @@
+actor: Tester
+paths:
+  tests: tests
+  output: tests/_output
+  data: tests/_data
+  support: tests/_support
+  envs: tests/_envs
+bootstrap: _craft_bootstrap.php
+params:
+  - tests/.env
+modules:
+  config:
+    \craft\test\Craft:
+      configFile: 'tests/_craft/config/test.php'
+      entryUrl: 'https://smart-table-test.test/index.php'
+      projectConfig: {}
+      # Installing the plugin runs its Install migration, which creates the
+      # full schema — so no explicit `migrations:` entry is needed (listing
+      # Install here too would run it twice and collide on the tables).
+      plugins:
+        - handle: smart-table
+          class: anvildevxyz\smarttable\Plugin
+        - handle: ckeditor
+          class: craft\ckeditor\Plugin
+      cleanup: true
+      transaction: true
+      dbSetup:
+        clean: true
+        setupCraft: true

@@ -1,0 +1,59 @@
+{#
+  Smart Table accessible render helper
+#}
+{% macro table(rows, columns, options) %}
+  {% import _self as smartTable %}
+  {% set options = options|default({}) %}
+  {% set tableClass = 'smarttable-table' ~ (options.class is defined and options.class ? ' ' ~ options.class : '') %}
+  <table class="{{ tableClass }}">
+    {% if options.caption is defined and options.caption %}
+      <caption class="smarttable-table__caption">{{ options.caption }}</caption>
+    {% endif %}
+    <thead>
+      <tr>
+        {% for column in columns %}
+          <th scope="col" class="smarttable-table__heading">{{ column.heading }}</th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in rows %}
+        {% set rowClass = 'smarttable-table__row' ~ (row.isHeader ? ' smarttable-table__row--header' : '') ~ (row.rowClass ? ' ' ~ row.rowClass : '') %}
+        <tr class="{{ rowClass }}">
+          {% for column in columns %}
+            {% set cell = attribute(row, column.handle) %}
+            {% set cellClass = 'smarttable-table__cell' ~ (row.isHeader ? ' smarttable-table__cell--header' : '') %}
+            {% set cellTag = row.isHeader ? 'th' : 'td' %}
+            {%- tag cellTag with {
+              scope: row.isHeader ? 'row' : false,
+              class: cellClass,
+            } -%}{{ smartTable._cell(cell, column) }}{%- endtag -%}
+          {% endfor %}
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endmacro %}
+
+{% macro _cell(cell, column) %}
+  {%- if cell is same as(true) -%}
+    {{- 'Yes'|t('smart-table') -}}
+  {%- elseif cell is same as(false) -%}
+    {{- 'No'|t('smart-table') -}}
+  {%- elseif cell is iterable -%}
+    {%- for element in cell -%}
+      {%- if element.url is defined and element.url -%}
+        <a href="{{ element.url }}">{{ element.title|default(element) }}</a>
+      {%- else -%}
+        {{- element.title|default(element) -}}
+      {%- endif -%}
+      {%- if not loop.last %}, {% endif -%}
+    {%- endfor -%}
+  {%- elseif column.format is defined and column.format == 'date' and cell -%}
+    {{- cell|date -}}
+  {%- elseif column.raw is defined and column.raw -%}
+    {{- cell|raw -}}
+  {%- else -%}
+    {{- cell -}}
+  {%- endif -%}
+{% endmacro %}

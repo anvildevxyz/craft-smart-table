@@ -1,0 +1,83 @@
+{
+    "name": "anvildevxyz/craft-smart-table",
+    "description": "A compact table field with inline rich text and relation cells.",
+    "type": "craft-plugin",
+    "version": "1.0.0",
+    "keywords": [
+        "craft",
+        "cms",
+        "craftcms",
+        "craft-plugin",
+        "table",
+        "grid",
+        "richtext",
+        "relations"
+    ],
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "anvildevxyz"
+        }
+    ],
+    "support": {
+        "docs": "https://github.com/anvildevxyz/craft-smart-tabel/blob/main/README.md",
+        "issues": "https://github.com/anvildevxyz/craft-smart-tabel/issues",
+        "source": "https://github.com/anvildevxyz/craft-smart-tabel"
+    },
+    "require": {
+        "php": "^8.2",
+        "craftcms/cms": "^5.10.0",
+        "craftcms/ckeditor": "^5.7"
+    },
+    "require-dev": {
+        "craftcms/ecs": "dev-main",
+        "craftcms/phpstan": "dev-main",
+        "craftcms/rector": "dev-main",
+        "phpstan/phpstan": "^1.10.0",
+        "phpunit/phpunit": "^10.5",
+        "codeception/codeception": "^5.2",
+        "codeception/module-asserts": "^3.0",
+        "codeception/module-yii2": "^1.1",
+        "vlucas/phpdotenv": "^5.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "anvildevxyz\\smarttable\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "anvildevxyz\\smarttable\\tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "check-cs": "ecs check --ansi",
+        "fix-cs": "ecs check --ansi --fix",
+        "phpstan": "phpstan analyse --memory-limit=256M",
+        "rector": "rector process --ansi",
+        "test": "phpunit",
+        "test:integration": "codecept run integration",
+        "check": [
+            "@check-cs",
+            "@phpstan",
+            "@test"
+        ]
+    },
+    "extra": {
+        "name": "Smart Table",
+        "handle": "smart-table",
+        "developer": "anvildevxyz",
+        "class": "anvildevxyz\\smarttable\\Plugin",
+        "documentationUrl": "https://github.com/anvildevxyz/craft-smart-tabel/blob/main/README.md",
+        "changelogUrl": "https://raw.githubusercontent.com/anvildevxyz/craft-smart-tabel/main/CHANGELOG.md"
+    },
+    "config": {
+        "allow-plugins": {
+            "yiisoft/yii2-composer": true,
+            "craftcms/plugin-installer": true
+        },
+        "platform": {
+            "php": "8.2"
+        }
+    }
+}

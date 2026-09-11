@@ -1,0 +1,20 @@
+parameters:
+    level: 8
+    paths:
+        - src
+    excludePaths:
+        - src/web/*
+    tmpDir: .phpstan
+    treatPhpDocTypesAsCertain: false
+    bootstrapFiles:
+        - vendor/autoload.php
+        - vendor/craftcms/cms/bootstrap/console.php
+
+    # Rules for stricter code
+    checkFunctionNameCase: true
+    reportMagicMethods: true
+    reportMagicProperties: true
+    checkExplicitMixed: true
+
+includes:
+    - vendor/craftcms/phpstan/phpstan.neon

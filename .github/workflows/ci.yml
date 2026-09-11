@@ -1,0 +1,138 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  quality:
+    name: Quality gate (PHP ${{ matrix.php }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.2', '8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: mbstring, pdo, pdo_mysql, intl, gd, bcmath
+          tools: composer:v2
+          coverage: none
+
+      - name: Cache Composer
+        uses: actions/cache@v6
+        with:
+          path: ~/.composer/cache
+          key: ${{ runner.os }}-php${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
+          restore-keys: ${{ runner.os }}-php${{ matrix.php }}-composer-
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress
+
+      - name: ECS
+        run: vendor/bin/ecs check
+
+      - name: PHPStan
+        run: vendor/bin/phpstan analyse --memory-limit=1G
+
+      - name: PHPUnit (unit)
+        run: vendor/bin/phpunit
+
+  integration:
+    name: Integration suite
+    runs-on: ubuntu-latest
+    needs: quality
+    strategy:
+      fail-fast: false
+      matrix:
+        db: [mysql, postgres]
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: craft_test
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -proot"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: craft_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, pdo, pdo_mysql, pdo_pgsql, intl, gd, bcmath
+          tools: composer:v2
+          coverage: none
+
+      - name: Cache Composer
+        uses: actions/cache@v6
+        with:
+          path: ~/.composer/cache
+          key: ${{ runner.os }}-php8.2-composer-${{ hashFiles('composer.json') }}
+          restore-keys: ${{ runner.os }}-php8.2-composer-
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress
+
+      - name: Configure DB env (MySQL)
+        if: matrix.db == 'mysql'
+        run: |
+          {
+            echo "CRAFT_DB_DSN=mysql:host=127.0.0.1;port=3306;dbname=craft_test"
+            echo "CRAFT_DB_USER=root"
+            echo "CRAFT_DB_PASSWORD=root"
+          } >> "$GITHUB_ENV"
+
+      - name: Configure DB env (Postgres)
+        if: matrix.db == 'postgres'
+        run: |
+          {
+            echo "CRAFT_DB_DSN=pgsql:host=127.0.0.1;port=5432;dbname=craft_test"
+            echo "CRAFT_DB_USER=postgres"
+            echo "CRAFT_DB_PASSWORD=postgres"
+          } >> "$GITHUB_ENV"
+
+      - name: Write test env
+        run: |
+          cat > tests/.env <<EOF
+          CRAFT_DB_DSN="${CRAFT_DB_DSN}"
+          CRAFT_DB_USER="${CRAFT_DB_USER}"
+          CRAFT_DB_PASSWORD="${CRAFT_DB_PASSWORD}"
+          CRAFT_DB_TABLE_PREFIX=""
+          SECURITY_KEY="ci-security-key-for-smart-table-integration"
+          EOF
+
+      - name: Wait for database
+        run: |
+          if [ "${{ matrix.db }}" = "mysql" ]; then
+            for i in $(seq 1 30); do mysqladmin ping -h127.0.0.1 -uroot -proot --silent && break; sleep 2; done
+          else
+            for i in $(seq 1 30); do pg_isready -h127.0.0.1 -p5432 -U postgres && break; sleep 2; done
+          fi
+
+      - name: Integration tests
+        env:
+          CRAFT_DB_TABLE_PREFIX: ""
+          SECURITY_KEY: "ci-security-key-for-smart-table-integration"
+        run: composer test:integration
