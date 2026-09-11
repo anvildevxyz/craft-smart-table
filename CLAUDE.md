@@ -2,7 +2,7 @@
 
 ### Issue tracker
 
-GitHub Issues on `fabianhaef/craft-smart-tabel`, via the `gh` CLI. See `docs/agents/issue-tracker.md`.
+GitHub Issues on `anvildevxyz/craft-smart-table`, via the `gh` CLI. See `docs/agents/issue-tracker.md`.
 
 ### Triage labels
 

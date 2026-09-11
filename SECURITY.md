@@ -8,7 +8,7 @@ Only the latest released version of Smart Table receives security fixes.
 
 Please **do not** open a public GitHub issue for a security vulnerability.
 
-Instead, report it privately via [GitHub's private vulnerability reporting](https://github.com/fabianhaef/craft-smart-tabel/security/advisories/new), or email fabian.haefliger@zeix.com with:
+Instead, report it privately via [GitHub's private vulnerability reporting](https://github.com/anvildevxyz/craft-smart-table/security/advisories/new), or email fabian.haefliger@zeix.com with:
 
 - A description of the vulnerability and its potential impact.
 - Steps to reproduce it (a minimal field configuration and request, where possible).

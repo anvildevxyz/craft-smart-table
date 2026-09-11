@@ -20,9 +20,9 @@
         }
     ],
     "support": {
-        "docs": "https://github.com/anvildevxyz/craft-smart-tabel/blob/main/README.md",
-        "issues": "https://github.com/anvildevxyz/craft-smart-tabel/issues",
-        "source": "https://github.com/anvildevxyz/craft-smart-tabel"
+        "docs": "https://github.com/anvildevxyz/craft-smart-table/blob/main/README.md",
+        "issues": "https://github.com/anvildevxyz/craft-smart-table/issues",
+        "source": "https://github.com/anvildevxyz/craft-smart-table"
     },
     "require": {
         "php": "^8.2",
@@ -68,8 +68,8 @@
         "handle": "smart-table",
         "developer": "anvildevxyz",
         "class": "anvildevxyz\\smarttable\\Plugin",
-        "documentationUrl": "https://github.com/anvildevxyz/craft-smart-tabel/blob/main/README.md",
-        "changelogUrl": "https://raw.githubusercontent.com/anvildevxyz/craft-smart-tabel/main/CHANGELOG.md"
+        "documentationUrl": "https://github.com/anvildevxyz/craft-smart-table/blob/main/README.md",
+        "changelogUrl": "https://raw.githubusercontent.com/anvildevxyz/craft-smart-table/main/CHANGELOG.md"
     },
     "config": {
         "allow-plugins": {
