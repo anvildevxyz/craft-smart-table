@@ -279,7 +279,7 @@ German, French, Spanish, and Italian catalogs cover every CP string (machine-tra
 
 ## License
 
-Proprietary. See [LICENSE.md](LICENSE.md): one production environment per licensed copy, copyright notice retained, no circumvention of licensing features.
+Copyright © anvildev. All rights reserved.
 
 ## Development
 

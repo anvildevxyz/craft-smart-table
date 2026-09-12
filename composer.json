@@ -16,7 +16,8 @@
     "license": "proprietary",
     "authors": [
         {
-            "name": "anvildevxyz"
+            "name": "anvildev",
+            "homepage": "https://anvildev.xyz"
         }
     ],
     "support": {
@@ -66,7 +67,8 @@
     "extra": {
         "name": "Smart Table",
         "handle": "smart-table",
-        "developer": "anvildevxyz",
+        "developer": "Anvildev",
+        "developerUrl": "https://anvildev.xyz",
         "class": "anvildevxyz\\smarttable\\Plugin",
         "documentationUrl": "https://github.com/anvildevxyz/craft-smart-table/blob/main/README.md",
         "changelogUrl": "https://raw.githubusercontent.com/anvildevxyz/craft-smart-table/main/CHANGELOG.md"
