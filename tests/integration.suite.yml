@@ -1,4 +1,7 @@
 actor: IntegrationTester
+# The suite name is lowercase, but the directory is Integration. Linux CI
+# does not treat those as the same path.
+path: Integration
 modules:
   enabled:
     - Asserts
