@@ -4,12 +4,13 @@ parameters:
         - src
     excludePaths:
         - src/web/*
-    tmpDir: .phpstan
-    treatPhpDocTypesAsCertain: false
+        - src/compat/*
     bootstrapFiles:
         - vendor/autoload.php
         - vendor/craftcms/cms/bootstrap/console.php
-
+        - src/compat/InputSchemaFieldInterface.php
+    tmpDir: .phpstan
+    treatPhpDocTypesAsCertain: false
     # Rules for stricter code
     checkFunctionNameCase: true
     reportMagicMethods: true

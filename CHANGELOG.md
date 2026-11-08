@@ -1,5 +1,10 @@
 # Release Notes for Smart Table
 
+## 1.1.0 - 2026-11-08
+
+### Added
+- The field describes its row schema to Craft 5.12’s MCP server, so an agent can read and write cells. Relation cells are element ids. Older Craft is unchanged.
+
 ## 1.0.0 - 2026-09-11
 
 ### Added
