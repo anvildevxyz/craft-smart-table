@@ -2,7 +2,7 @@
     "name": "anvildevxyz/craft-smart-table",
     "description": "A compact table field with inline rich text and relation cells.",
     "type": "craft-plugin",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "keywords": [
         "craft",
         "cms",
