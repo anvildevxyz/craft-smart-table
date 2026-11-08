@@ -2,11 +2,14 @@
 
 namespace anvildevxyz\smarttable\fields;
 
+require_once dirname(__DIR__) . '/compat/InputSchemaFieldInterface.php';
+
 use anvildevxyz\smarttable\assetbundles\SmartTableFieldAsset;
 use anvildevxyz\smarttable\gql\SmartTableRowType;
 use Craft;
 use craft\base\ElementInterface;
 use craft\base\Field;
+use craft\base\InputSchemaFieldInterface;
 use craft\base\PreviewableFieldInterface;
 use craft\ckeditor\Field as CkeditorField;
 use craft\db\Table as DbTable;
@@ -46,7 +49,7 @@ use yii\db\Schema;
  *
  * @phpstan-type ColumnConfig array<string, mixed>
  */
-class SmartTableField extends Field implements PreviewableFieldInterface
+class SmartTableField extends Field implements InputSchemaFieldInterface, PreviewableFieldInterface
 {
     /**
      * Single source for every column type: its settings-dropdown label, and
@@ -280,6 +283,57 @@ class SmartTableField extends Field implements PreviewableFieldInterface
             $fields[$handle] = $columnType($this->columnType($column));
         }
         return $fields;
+    }
+
+    /**
+     * JSON schema Craft 5.12's MCP server uses when an agent writes this field.
+     * Rows match the GraphQL mutation input: handles, not column ids, and
+     * relation cells are element ids.
+     *
+     * @return array<string, mixed>
+     */
+    public function getInputSchema(): array
+    {
+        $properties = [
+            'isHeader' => ['type' => 'boolean'],
+            'rowClass' => ['type' => 'string'],
+        ];
+        foreach ($this->columns as $column) {
+            $handle = $this->columnHandle($column);
+            if ($handle === '') {
+                continue;
+            }
+            $properties[$handle] = $this->columnInputSchema($this->columnType($column));
+        }
+
+        return [
+            'type' => 'array',
+            'items' => [
+                'type' => 'object',
+                'properties' => $properties,
+                'additionalProperties' => false,
+            ],
+        ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function columnInputSchema(string $type): array
+    {
+        if (self::relationElementClass($type) !== null) {
+            return [
+                'type' => 'array',
+                'items' => ['type' => 'integer'],
+                'description' => 'Element ids.',
+            ];
+        }
+
+        return match ($type) {
+            'checkbox' => ['type' => 'boolean'],
+            'number' => ['type' => 'number'],
+            default => ['type' => 'string'],
+        };
     }
 
     private function columnGqlMutationType(string $type): GqlType
